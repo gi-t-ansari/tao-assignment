@@ -1,12 +1,19 @@
 // src/components/Login.jsx
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../firebaseConfig";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { APP_URL } from "../../config";
 
-const Login = ({ setUser }) => {
+const Login = () => {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
+      console.log("User Detail =>", result.user);
+      navigate(APP_URL.HOME);
     } catch (error) {
       console.error("Error signing in:", error.message);
     }
