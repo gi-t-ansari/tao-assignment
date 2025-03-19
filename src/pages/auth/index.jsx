@@ -1,10 +1,10 @@
 import { Suspense, lazy } from "react";
-// import { CircularProgress } from "../../common";
+import { CircularProgress } from "../../components";
 
 const LazyLogin = lazy(() => import("./Login"));
 
 export const Login = (props) => (
-  <Suspense fallback={<>Loading</>}>
+  <Suspense fallback={<CircularProgress />}>
     <LazyLogin {...props} />
   </Suspense>
 );
