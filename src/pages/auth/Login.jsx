@@ -1,4 +1,3 @@
-// src/components/Login.jsx
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../firebaseConfig";
 import { useState } from "react";
