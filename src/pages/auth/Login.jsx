@@ -22,7 +22,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center  min-h-screen relative overflow-clip bg-[#FFF9F9]">
-      <section className="md:pl-20 mx-auto flex flex-col items-center w-full">
+      <section className="md:pl-20 md:m-0 mx-auto flex flex-col md:items-start items-center md:w-fit w-full">
         <header className="text-[#7B1984] flex items-center gap-x-1 ">
           <HiOutlineClipboardList size={30} />
           <h1 className="text-[26px] font-bold">TaskBuddy</h1>
