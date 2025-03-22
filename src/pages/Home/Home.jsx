@@ -5,8 +5,15 @@ import Layout from "../../components/layout/Layout";
 
 const Home = () => {
   const [selectedView, setSelectedView] = useState(TABS_CONTENT[0].name);
+  const [categoryFilterValue, setCategoryFilterValue] = useState("");
+
   return (
-    <Layout selectedView={selectedView} setSelectedView={setSelectedView}>
+    <Layout
+      selectedView={selectedView}
+      setSelectedView={setSelectedView}
+      categoryFilterValue={categoryFilterValue}
+      setCategoryFilterValue={setCategoryFilterValue}
+    >
       <h1>Home</h1>
     </Layout>
   );

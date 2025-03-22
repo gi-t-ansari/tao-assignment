@@ -5,3 +5,5 @@ export const TABS_CONTENT = [
   { name: "List", icon: TfiViewList },
   { name: "Board", icon: CiViewBoard },
 ];
+
+export const CATEGORY_OPTIONS = ["Work", "Personal"];
