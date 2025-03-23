@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Navbar from "../../components/layout/Navbar";
 import { TABS_CONTENT } from "../../config";
 import Layout from "../../components/layout/Layout";
+import { ListView, BoardView } from "../../components";
 
 const Home = () => {
   const [selectedView, setSelectedView] = useState(TABS_CONTENT[0].name);
@@ -14,7 +14,7 @@ const Home = () => {
       categoryFilterValue={categoryFilterValue}
       setCategoryFilterValue={setCategoryFilterValue}
     >
-      <h1>Home</h1>
+      {TABS_CONTENT[0].name === selectedView ? <ListView /> : <BoardView />}
     </Layout>
   );
 };

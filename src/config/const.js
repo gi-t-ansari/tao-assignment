@@ -7,3 +7,10 @@ export const TABS_CONTENT = [
 ];
 
 export const CATEGORY_OPTIONS = ["Work", "Personal"];
+
+export const TABLE_HEADERS = [
+  "Task Name",
+  "Due On",
+  "Task Status",
+  "Task Category",
+];

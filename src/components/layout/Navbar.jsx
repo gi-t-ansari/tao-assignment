@@ -17,7 +17,7 @@ const Navbar = ({ selectedView, setSelectedView }) => {
   };
 
   return (
-    <nav className="w-full h-fit flex justify-between items-center md:px-6 md:py-0 px-4 py-3 sticky top-0 md:mt-8 md:bg-white bg-[#FAEEFC]">
+    <nav className="w-full h-fit flex justify-between items-center md:px-6 md:py-0 px-4 py-3 sticky top-0 md:mt-8 md:bg-white bg-[#FAEEFC] z-10">
       <section>
         <div className="text-[#2F2F2F] flex items-center gap-x-1 ">
           <HiOutlineClipboardList className="md:block hidden" size={28} />
@@ -31,7 +31,7 @@ const Navbar = ({ selectedView, setSelectedView }) => {
               className={`flex items-center gap-x-1 pb-1 mb-[1.5px] cursor-pointer ${
                 selectedView === ele.name
                   ? " border-b text-black"
-                  : "text-[#231F20D1]"
+                  : "text-[#231F20D1] border-b border-transparent"
               } `}
             >
               <ele.icon size={ind === 0 ? 12 : 16} />
