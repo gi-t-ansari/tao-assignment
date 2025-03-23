@@ -7,6 +7,7 @@ export const TABS_CONTENT = [
 ];
 
 export const CATEGORY_OPTIONS = ["Work", "Personal"];
+export const TASK_OPTIONS = ["to-do", "in-progress", "completed"];
 
 export const TABLE_HEADERS = [
   "Task Name",
