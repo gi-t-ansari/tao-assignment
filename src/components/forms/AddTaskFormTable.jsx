@@ -95,7 +95,10 @@ const AddTaskFormTable = ({ setIsAddTaskOpen }) => {
         </div>
       </div>
       <div className="mt-2 flex items-center gap-x-3">
-        <button className="bg-[#7B1984] text-white flex items-center gap-x-2 px-3 py-1 rounded-full cursor-pointer">
+        <button
+          type="submit"
+          className="bg-[#7B1984] text-white flex items-center gap-x-2 px-3 py-1 rounded-full cursor-pointer"
+        >
           <span className="text-sm uppercase font-bold">Add</span>
           <PiArrowBendDownLeft />
         </button>

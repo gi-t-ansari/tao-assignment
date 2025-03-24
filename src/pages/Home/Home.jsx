@@ -4,7 +4,7 @@ import Layout from "../../components/layout/Layout";
 import { ListView, BoardView } from "../../components";
 
 const Home = () => {
-  const [selectedView, setSelectedView] = useState(TABS_CONTENT[0].name);
+  const [selectedView, setSelectedView] = useState(TABS_CONTENT[1].name);
   const [categoryFilterValue, setCategoryFilterValue] = useState("");
 
   return (
