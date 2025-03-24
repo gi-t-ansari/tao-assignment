@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
 import Header from "./Header";
-import { AddTaskModal } from "../modals";
+import { AddTaskModal, UpdateTaskModal } from "../modals";
 
 const Layout = ({
   selectedView,
@@ -11,6 +11,7 @@ const Layout = ({
   children,
 }) => {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+  const [isUpdateTaskOpen, setIsUpdateTaskOpen] = useState(false);
 
   return (
     <main className="w-screen h-screen overflow-x-hidden">
@@ -23,6 +24,10 @@ const Layout = ({
       <AddTaskModal
         open={isAddTaskOpen}
         onClose={() => setIsAddTaskOpen(false)}
+      />
+      <UpdateTaskModal
+        open={isUpdateTaskOpen}
+        onClose={() => setIsUpdateTaskOpen(false)}
       />
     </main>
   );

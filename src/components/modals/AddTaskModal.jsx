@@ -1,15 +1,51 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { TASK_OPTIONS } from "../../config";
+import { CATEGORY_OPTIONS, TASK_OPTIONS } from "../../config";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const AddTaskModal = ({ open, onClose }) => {
-  const [showModal, setShowModal] = useState(open);
   const [loading, setLoading] = useState(false);
+
+  const schema = yup.object().shape({
+    title: yup.string().required("Title is required."),
+    description: yup
+      .string()
+      .required("Description is required.")
+      .max(300, "Description should not be more that 300 words."),
+    category: yup.string().required("Category is required."),
+    status: yup.string().required("Status is required."),
+    dueDate: yup.string().required("Due dta eis required."),
+    attachments: yup.mixed(),
+  });
+
+  const {
+    handleSubmit,
+    reset,
+    control,
+    trigger,
+    getValues,
+    watch,
+    register,
+    formState: { errors },
+    setValue,
+  } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
   const handleCancel = (e) => {
     e.preventDefault();
     onClose();
+    reset();
   };
+
+  const handleAddTask = (data) => {
+    setLoading(true);
+    console.log("Data -->", data);
+    onClose();
+    setLoading(false);
+    reset();
+  };
+
   return (
     open && (
       <div className="h-screen w-screen top-0 left-0 right-0 bottom-0 fixed z-20">
@@ -17,61 +53,102 @@ const AddTaskModal = ({ open, onClose }) => {
           className="h-screen w-screen top-0 left-0 right-0 bottom-0 fixed bg-[rgba(49,49,49,0.8)]"
           onClick={onClose}
         ></div>
-        <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 overflow-hidden leading-snug bg-white  rounded-[20px] w-[674px] h-fit">
-          <header className="p-4 border-b border-[#0000001A] flex items-center justify-between">
+        <div className="absolute md:top-[50%] bottom-0 md:left-[50%] md:-translate-x-1/2 md:-translate-y-1/2 overflow-hidden leading-snug bg-white  md:rounded-[20px] rounded-t-[20px] rounded-b-lg md:w-[674px] w-full md:h-fit h-[95%] flex flex-col">
+          <header className="p-4 border-b w-full h-fit border-[#0000001A] flex items-center justify-between sticky top-0 bg-white z-10">
             <h4 className="text-2xl font-semibold">Create Task</h4>
             <IoClose onClick={onClose} size={24} className="cursor-pointer" />
           </header>
-          <form className="w-full px-4 py-2">
+          <form
+            className="w-full px-4 py-2 flex-1 overflow-y-auto"
+            onSubmit={handleSubmit(handleAddTask)}
+          >
             <div className="w-full">
               <input
+                {...register("title")}
                 type="text"
                 placeholder="Task title"
-                className="w-full text-sm p-2 outline-none border border-[#00000021] placeholder:text-[#A2A3A7] rounded-lg"
+                className={`w-full text-sm p-2 outline-none border ${
+                  errors?.title ? "border-red-500" : "border-[#00000021]"
+                } placeholder:text-[#A2A3A7] rounded-lg`}
               />
+              {errors?.title && (
+                <p className="text-[10px] text-red-500">
+                  {errors?.title?.message}
+                </p>
+              )}
             </div>
             <div className="w-full  mt-3">
               <div className="w-full h-fit relative">
                 <textarea
+                  {...register("description")}
                   rows={4}
                   placeholder="Description"
-                  className="w-full resize-none text-sm p-2 outline-none border border-[#00000021] placeholder:text-[#A2A3A7] rounded-lg"
+                  className={`w-full resize-none text-sm p-2 outline-none border ${
+                    errors?.description
+                      ? "border-red-500"
+                      : "border-[#00000021]"
+                  } placeholder:text-[#A2A3A7] rounded-lg`}
                 />
-                <p className="text-[#A2A3A7] text-xs absolute right-3 bottom-3">
-                  0/300 characters
+                <p
+                  className={`${
+                    (watch("description") || "").length <= 300
+                      ? "text-[#A2A3A7]"
+                      : "text-red-500"
+                  } text-xs absolute right-3 bottom-3`}
+                >
+                  {`${(watch("description") || "").length}/300 characters`}
                 </p>
               </div>
+              {errors?.description && (
+                <p className="text-[10px] text-red-500">
+                  {errors?.description?.message}
+                </p>
+              )}
             </div>
-            <div className="w-full mt-2 flex items-center justify-between gap-x-4">
-              <div className="flex-1">
+            <div className="w-full mt-2 flex md:flex-row flex-col md:items-center md:justify-between md:gap-x-4 gap-y-2">
+              <div className="md:flex-1">
                 <h6 className="text-xs text-[#00000099] font-semibold mb-2">
                   Task Category*
                 </h6>
                 <div className="flex items-center gap-x-3">
-                  <label className="px-6 py-2.5 rounded-full text-[10px] text-[#090909] font-bold border border-[#00000021]">
-                    <input name="category" type="radio" hidden />
-                    Work
-                  </label>
-                  <label className="px-6 py-2.5 rounded-full text-[10px] text-[#090909] font-bold border border-[#00000021]">
-                    <input name="category" type="radio" hidden />
-                    Personal
-                  </label>
+                  {CATEGORY_OPTIONS.map((ele, ind) => (
+                    <label
+                      key={`${ele}${ind + 9}`}
+                      className={`px-6 py-2.5 rounded-full text-[10px] ${
+                        watch("category") === ele
+                          ? "bg-[#7B1984] border-[#7B1984] text-white"
+                          : "border-[#00000021] text-[#090909]"
+                      }  font-bold border transition duration-300 ease-linear`}
+                    >
+                      <input
+                        {...register("category")}
+                        name="category"
+                        value={ele}
+                        type="radio"
+                        hidden
+                      />
+                      {ele}
+                    </label>
+                  ))}
                 </div>
               </div>
-              <div className="flex-1">
+              <div className="md:flex-1">
                 <h6 className="text-xs text-[#00000099] font-semibold mb-2">
                   Due on*
                 </h6>
                 <input
                   type="date"
-                  className="w-full text-sm p-2 outline-none border border-[#00000021] placeholder:text-[#A2A3A7] rounded-lg"
+                  className="md:w-full w-1/2 text-sm p-2 outline-none border border-[#00000021] placeholder:text-[#A2A3A7] rounded-lg"
                 />
               </div>
-              <div className="flex-1">
+              <div className="md:flex-1">
                 <h6 className="text-xs text-[#00000099] font-semibold mb-2">
                   Task Status*
                 </h6>
-                <select className="w-full text-sm p-2 outline-none border border-[#00000021] placeholder:text-[#A2A3A7] rounded-lg">
+                <select
+                  onChange={(e) => setValue("status", e.target.value)}
+                  className="md:w-full w-1/2 text-sm p-2 outline-none border border-[#00000021] placeholder:text-[#A2A3A7] rounded-lg"
+                >
                   <option value="">Choose</option>
                   {TASK_OPTIONS.map((ele, ind) => (
                     <option
@@ -89,15 +166,22 @@ const AddTaskModal = ({ open, onClose }) => {
               <h6 className="text-sm text-[#00000099] font-semibold mb-2">
                 Attachment
               </h6>
-              <label className="w-full block font-medium text-[#1E212A] py-3 text-center text-xs rounded-lg border border-[#00000021]">
-                <input type="file" multiple name="" id="" hidden />
+              <label className="w-full bg-[#F1F1F15C] block font-medium text-[#1E212A] py-3 text-center text-xs rounded-lg border border-[#00000021]">
+                <input
+                  type="file"
+                  {...register("attachments")}
+                  multiple
+                  name=""
+                  id=""
+                  hidden
+                />
                 Drop your files here or{" "}
                 <span className="text-[#5377E3] underline">Upload</span>
               </label>
               <div className="w-full h-44"></div>
             </div>
           </form>
-          <footer className="bg-[#F1F1F1] flex justify-end items-center gap-x-2 p-4">
+          <footer className="bg-[#F1F1F1] flex justify-end items-center gap-x-2 p-4 h-fit">
             <button
               onClick={handleCancel}
               className=" px-6 py-2.5 cursor-pointer text-sm uppercase font-bold rounded-full text-[#090909] bg-white border border-[#00000030]"
@@ -105,7 +189,22 @@ const AddTaskModal = ({ open, onClose }) => {
               Cancel
             </button>
             <button
-              className={`bg-[#B685BA] px-6 py-2.5 text-sm uppercase font-bold rounded-full text-white`}
+              disabled={
+                loading ||
+                !watch("title") ||
+                !watch("description") ||
+                !watch("dueDate") ||
+                !watch("status")
+              }
+              className={`${
+                loading ||
+                !watch("title") ||
+                !watch("description") ||
+                !watch("dueDate") ||
+                !watch("status")
+                  ? "bg-[#B685BA] cursor-not-allowed"
+                  : "bg-[#7B1984] cursor-pointer"
+              } px-6 py-2.5 text-sm uppercase font-bold rounded-full text-white`}
             >
               Create
             </button>
