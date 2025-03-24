@@ -2,8 +2,7 @@ import React from "react";
 import { CATEGORY_OPTIONS } from "../../config";
 import { RiSearchLine } from "react-icons/ri";
 
-const Header = ({ categoryFilterValue, setCategoryFilterValue }) => {
-  const handleOpenAddTask = () => {};
+const Header = ({ setCategoryFilterValue, setIsAddTaskOpen }) => {
   return (
     <header className="w-full h-fit flex md:flex-row flex-col-reverse justify-between md:items-center md:px-6 px-4">
       <div className="w-full block md:hidden h-fit relative mt-3">
@@ -50,8 +49,8 @@ const Header = ({ categoryFilterValue, setCategoryFilterValue }) => {
           />
         </div>
         <button
-          onClick={handleOpenAddTask}
-          className="md:px-10 md:py-3.5 px-6 py-2.5 bg-[#7B1984] text-white md:text-sm text-[10px] md:font-bold font-semibold uppercase rounded-full"
+          onClick={() => setIsAddTaskOpen(true)}
+          className="md:px-10 md:py-3.5 px-6 py-2.5 bg-[#7B1984] text-white md:text-sm text-[10px] md:font-bold font-semibold uppercase rounded-full cursor-pointer"
         >
           Add Task
         </button>
