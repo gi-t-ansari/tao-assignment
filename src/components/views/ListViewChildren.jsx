@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { formatDate } from "../../config";
+import { formatDate, TASK_OPTIONS } from "../../config";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { RiDeleteBinFill, RiEditFill } from "react-icons/ri";
+import { RxDragHandleDots2 } from "react-icons/rx";
+import { TiTick } from "react-icons/ti";
 
 const ListViewChildren = ({ taskData }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,8 +12,28 @@ const ListViewChildren = ({ taskData }) => {
     setIsMenuOpen(!isMenuOpen);
   };
   return (
-    <div className="w-full  flex items-center border-b py-2 border-[#0000001A] last:border-none">
-      <p className="flex-1 px-3 text-sm">{taskData?.title}</p>
+    <div className="w-full  flex items-center border-b py-2 border-[#0000001A] last:border-none font-medium ">
+      <div className="flex-1 px-3 flex items-center gap-x-1.5">
+        <input type="checkbox" className="w-3.5 h-3.5" />
+        <RxDragHandleDots2 className="text-[#9A9A9A] md:block hidden" />
+        <div
+          className={`h-[16.67px] w-[16.67px] rounded-full ${
+            taskData?.status === TASK_OPTIONS[2]
+              ? "bg-[#1B8D17]"
+              : "bg-[#9A9A9A]"
+          } flex items-center justify-center`}
+        >
+          <TiTick className="text-white " size={13} />
+        </div>
+        <p
+          className={` text-sm ${
+            taskData?.status === TASK_OPTIONS[2] && "line-through"
+          }`}
+        >
+          {taskData?.title}
+        </p>
+      </div>
+
       <p className="flex-1 px-3 text-sm md:block hidden">
         {formatDate(taskData?.dueDate)}
       </p>
