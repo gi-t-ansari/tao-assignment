@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { CATEGORY_OPTIONS, TASK_OPTIONS } from "../../config";
+import { API_URL, CATEGORY_OPTIONS, TASK_OPTIONS } from "../../config";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AddTaskModal = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const schema = yup.object().shape({
     title: yup.string().required("Title is required."),
     description: yup
       .string()
-      .required("Description is required.")
       .max(300, "Description should not be more that 300 words."),
     category: yup.string().required("Category is required."),
     status: yup.string().required("Status is required."),
@@ -23,9 +24,6 @@ const AddTaskModal = ({ open, onClose }) => {
   const {
     handleSubmit,
     reset,
-    control,
-    trigger,
-    getValues,
     watch,
     register,
     formState: { errors },
@@ -38,12 +36,31 @@ const AddTaskModal = ({ open, onClose }) => {
     reset();
   };
 
+  const addTaskMutation = useMutation({
+    mutationFn: async (taskData) => {
+      setLoading(true);
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(taskData),
+      });
+      if (!response.ok) throw new Error("Failed to add task");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      onClose();
+      setLoading(false);
+      reset();
+    },
+    onError: (error) => {
+      console.error("Error adding task:", error);
+      setLoading(false);
+    },
+  });
+
   const handleAddTask = (data) => {
-    setLoading(true);
-    console.log("Data -->", data);
-    onClose();
-    setLoading(false);
-    reset();
+    addTaskMutation.mutate(data);
   };
 
   return (
@@ -137,6 +154,7 @@ const AddTaskModal = ({ open, onClose }) => {
                   Due on*
                 </h6>
                 <input
+                  {...register("dueDate")}
                   type="date"
                   className="md:w-full w-1/2 text-sm p-2 outline-none border border-[#00000021] placeholder:text-[#A2A3A7] rounded-lg"
                 />
@@ -146,7 +164,7 @@ const AddTaskModal = ({ open, onClose }) => {
                   Task Status*
                 </h6>
                 <select
-                  onChange={(e) => setValue("status", e.target.value)}
+                  {...register("status")}
                   className="md:w-full w-1/2 text-sm p-2 outline-none border border-[#00000021] placeholder:text-[#A2A3A7] rounded-lg"
                 >
                   <option value="">Choose</option>
@@ -182,30 +200,32 @@ const AddTaskModal = ({ open, onClose }) => {
             </div>
             <footer className="bg-[#F1F1F1] flex justify-end items-center gap-x-2 p-4 h-fit">
               <button
+                disabled={loading}
                 onClick={handleCancel}
                 className=" px-6 py-2.5 cursor-pointer text-sm uppercase font-bold rounded-full text-[#090909] bg-white border border-[#00000030]"
               >
                 Cancel
               </button>
               <button
+                type="submit"
                 disabled={
                   loading ||
                   !watch("title") ||
-                  !watch("description") ||
                   !watch("dueDate") ||
-                  !watch("status")
+                  !watch("status") ||
+                  !watch("category")
                 }
                 className={`${
                   loading ||
                   !watch("title") ||
-                  !watch("description") ||
                   !watch("dueDate") ||
-                  !watch("status")
+                  !watch("status") ||
+                  !watch("category")
                     ? "bg-[#B685BA] cursor-not-allowed"
                     : "bg-[#7B1984] cursor-pointer"
                 } px-6 py-2.5 text-sm uppercase font-bold rounded-full text-white`}
               >
-                Create
+                {loading ? "Creating..." : "Create"}
               </button>
             </footer>
           </form>

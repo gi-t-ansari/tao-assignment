@@ -23,9 +23,6 @@ const AddTaskFormTable = ({ setIsAddTaskOpen }) => {
   const {
     handleSubmit,
     reset,
-    control,
-    trigger,
-    getValues,
     watch,
     register,
     formState: { errors },
@@ -54,6 +51,7 @@ const AddTaskFormTable = ({ setIsAddTaskOpen }) => {
 
   const addTaskMutation = useMutation({
     mutationFn: async (taskData) => {
+      setLoading(true);
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -225,10 +223,13 @@ const AddTaskFormTable = ({ setIsAddTaskOpen }) => {
               : "bg-[#7B1984] cursor-pointer"
           } text-white flex items-center gap-x-2 px-3 py-1 rounded-full `}
         >
-          <span className="text-sm uppercase font-bold">Add</span>
+          <span className="text-sm uppercase font-bold">
+            {loading ? "Adding..." : "Add"}
+          </span>
           <PiArrowBendDownLeft />
         </button>
         <button
+          disabled={loading}
           className="uppercase text-sm font-bold cursor-pointer px-3 py-1 rounded-full"
           onClick={handleCancel}
         >

@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { TABLE_HEADERS } from "../../config";
+import { formatDate, TABLE_HEADERS, TASK_OPTIONS } from "../../config";
 import { AccordionComponent } from "../accordions";
 import { FaPlus } from "react-icons/fa6";
 import { AddTaskFormTable } from "../forms";
+import ListViewChildren from "./ListViewChildren";
 
-const ListView = () => {
+const ListView = ({ taskData }) => {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+  const [toDoTasks, setToDoTasks] = useState(
+    taskData?.filter((ele) => ele?.status === TASK_OPTIONS[0])
+  );
+  const [inProgressTasks, setInProgressTasks] = useState(
+    taskData?.filter((ele) => ele?.status === TASK_OPTIONS[1])
+  );
+  const [completedTasks, setCompletedTasks] = useState(
+    taskData?.filter((ele) => ele?.status === TASK_OPTIONS[2])
+  );
+
   return (
     <div className="w-full my-5">
       <div className="w-full  md:flex hidden">
@@ -21,7 +32,7 @@ const ListView = () => {
       <div className="w-full">
         <AccordionComponent
           name={"Todo"}
-          count={0}
+          count={toDoTasks?.length > 0 ? toDoTasks?.length : 0}
           className={"bg-[#FAC3FF] border border-[#FAC3FF]"}
         >
           <div className="w-full bg-[#F1F1F1] border border-[#FFFAEA] rounded-b-xl">
@@ -37,25 +48,37 @@ const ListView = () => {
             {isAddTaskOpen && (
               <AddTaskFormTable setIsAddTaskOpen={setIsAddTaskOpen} />
             )}
-            <p className="text-center py-10">No Tasks in To-Do</p>
+            {toDoTasks?.length > 0 ? (
+              toDoTasks?.map((ele) => <ListViewChildren taskData={ele} />)
+            ) : (
+              <p className="text-center py-10">No Tasks in To-Do</p>
+            )}
           </div>
         </AccordionComponent>
         <AccordionComponent
           name={"In-Progress"}
-          count={0}
+          count={inProgressTasks?.length > 0 ? inProgressTasks?.length : 0}
           className={"bg-[#85D9F1] border border-[#EAECF0] mt-5"}
         >
           <div className="w-full bg-[#F1F1F1] border border-[#FFFAEA] rounded-b-xl">
-            <p className="text-center py-10">No Tasks In Progress</p>
+            {inProgressTasks?.length > 0 ? (
+              inProgressTasks?.map((ele) => <ListViewChildren taskData={ele} />)
+            ) : (
+              <p className="text-center py-10">No Tasks In Progress</p>
+            )}
           </div>
         </AccordionComponent>
         <AccordionComponent
           name={"Completed "}
-          count={0}
+          count={completedTasks?.length > 0 ? completedTasks?.length : 0}
           className={"bg-[#CEFFCC] border border-[#EAECF0] mt-5"}
         >
           <div className="w-full bg-[#F1F1F1] border border-[#FFFAEA] rounded-b-xl">
-            <p className="text-center py-10">No Tasks in Completed</p>
+            {completedTasks?.length > 0 ? (
+              completedTasks?.map((ele) => <ListViewChildren taskData={ele} />)
+            ) : (
+              <p className="text-center py-10">No Completed Tasks</p>
+            )}
           </div>
         </AccordionComponent>
       </div>

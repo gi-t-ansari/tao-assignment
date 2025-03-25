@@ -11,16 +11,16 @@ const BoardContainerCards = ({ name, cardData, emptyText, className }) => {
       </h6>
       <div
         className={`${
-          cardData?.length <= 0
+          cardData?.length > 0
             ? "flex flex-col gap-y-2 mt-3"
             : "flex justify-center items-center "
         } flex-1 overflow-y-auto`}
       >
-        {cardData?.length <= 0 ? (
+        {cardData?.length > 0 ? (
           <>
-            <TaskCard />
-            <TaskCard />
-            <TaskCard />
+            {cardData?.map((ele) => (
+              <TaskCard key={ele?.id} cardData={ele} />
+            ))}
           </>
         ) : (
           <p className="text-[#2F2F2F] text-[15px]">{emptyText}</p>

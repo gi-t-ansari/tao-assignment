@@ -16,7 +16,7 @@ const TaskCard = ({ cardData }) => {
     <div className="w-full h-[110px] bg-white border-[0.5px] rounded-xl p-2 border-[#58575147] flex flex-col justify-between">
       <header className="w-full flex justify-between gap-x-3">
         <h6 className="flex-1 text-wrap text-base font-bold">
-          Interview with Design Team
+          {cardData?.title}
         </h6>
         <div className="relative w-fit">
           <HiOutlineDotsHorizontal
@@ -42,9 +42,11 @@ const TaskCard = ({ cardData }) => {
         </div>
       </header>
       <footer className="flex justify-between items-center">
-        <p className="text-[10px] text-[#00000085] font-semibold">Work</p>
         <p className="text-[10px] text-[#00000085] font-semibold">
-          {formatDate(new Date())}
+          {cardData?.category}
+        </p>
+        <p className="text-[10px] text-[#00000085] font-semibold">
+          {formatDate(cardData?.dueDate)}
         </p>
       </footer>
     </div>
