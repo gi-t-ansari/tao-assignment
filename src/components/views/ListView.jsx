@@ -35,8 +35,8 @@ const ListView = ({ taskData }) => {
           count={toDoTasks?.length > 0 ? toDoTasks?.length : 0}
           className={"bg-[#FAC3FF] border border-[#FAC3FF]"}
         >
-          <div className="w-full bg-[#F1F1F1] border border-[#FFFAEA] rounded-b-xl">
-            <div className="w-full h-fit py-2 px-6 border-b border-[#0000001A]">
+          <div className="w-full bg-[#F1F1F1] border border-[#FFFAEA] rounded-b-xl ">
+            <div className="w-full h-fit py-2 px-6 border-b border-[#0000001A] md:block hidden">
               <button
                 className="flex items-center gap-x-2 cursor-pointer"
                 onClick={() => setIsAddTaskOpen(true)}

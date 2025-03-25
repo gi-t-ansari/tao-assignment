@@ -84,7 +84,7 @@ const AddTaskFormTable = ({ setIsAddTaskOpen }) => {
 
   return (
     <form
-      className="w-full py-3 px-9 border-b border-[#0000001A]"
+      className="w-full py-3 px-9 border-b border-[#0000001A] md:block hidden"
       onSubmit={handleSubmit(handleAddTask)}
     >
       <div className="w-full flex ">
