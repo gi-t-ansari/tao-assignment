@@ -13,12 +13,22 @@ const UpdateTaskModal = ({ open, onClose }) => {
     title: yup.string().required("Title is required."),
     description: yup
       .string()
-      .required("Description is required.")
-      .max(300, "Description should not be more that 300 words."),
+      .max(300, "Description should not be more than 300 characters."),
     category: yup.string().required("Category is required."),
     status: yup.string().required("Status is required."),
-    dueDate: yup.string().required("Due dta eis required."),
-    attachments: yup.mixed(),
+    dueDate: yup.string().required("Due date is required."),
+    attachments: yup
+      .array()
+      .of(
+        yup
+          .mixed()
+          .test(
+            "fileType",
+            "Only files are allowed",
+            (value) => value instanceof File
+          )
+      )
+      .notRequired(),
   });
 
   const {
@@ -64,7 +74,7 @@ const UpdateTaskModal = ({ open, onClose }) => {
             <h4 className="text-2xl font-semibold">Update Task</h4>
             <IoClose onClick={onClose} size={24} className="cursor-pointer" />
           </header>
-          <div className="md:hidden bg-white flex items-center gap-x-3 p-4 sticky top-16 z-10">
+          <div className="md:hidden bg-white flex items-center gap-x-3 p-4 sticky top-[65px] z-10">
             <button
               onClick={toggleTask}
               className={`flex-1 py-1 rounded-full text-xs uppercase font-semibold ${
@@ -87,12 +97,12 @@ const UpdateTaskModal = ({ open, onClose }) => {
             </button>
           </div>
           {/**--------------- TABLET & LAPTOP SCREENS */}
-          <div className="w-full md:flex flex-1 hidden">
-            <div className="basis-[60%] h-full">
-              <form
-                className="w-full px-4 py-2 "
-                onSubmit={handleSubmit(handleUpdateTask)}
-              >
+          <form
+            onSubmit={handleSubmit(handleUpdateTask)}
+            className="md:block hidden w-full"
+          >
+            <div className="w-full flex ">
+              <div className="basis-[60%] h-full p-4">
                 <div className="w-full">
                   <input
                     {...register("title")}
@@ -211,42 +221,43 @@ const UpdateTaskModal = ({ open, onClose }) => {
                   </label>
                   <div className="w-full h-44"></div>
                 </div>
-              </form>
+              </div>
+              <div className="basis-[40%] bg-[#F1F1F1] border-l border-[#00000021]">
+                <h6 className="w-full p-4 bg-white text-base text-[#00000099]">
+                  Activity
+                </h6>
+              </div>
             </div>
-            <div className="basis-[40%] bg-[#F1F1F1] border-l border-[#00000021]">
-              <h6 className="w-full p-4 bg-white text-base text-[#00000099]">
-                Activity
-              </h6>
-            </div>
-          </div>
-          <footer className="bg-[#F1F1F1] md:flex hidden justify-end items-center gap-x-2 p-4 h-fit border-t border-[#00000021]">
-            <button
-              onClick={handleCancel}
-              className=" px-6 py-2.5 cursor-pointer text-sm uppercase font-bold rounded-full text-[#090909] bg-white border border-[#00000030]"
-            >
-              Cancel
-            </button>
-            <button
-              disabled={
-                loading ||
-                !watch("title") ||
-                !watch("description") ||
-                !watch("dueDate") ||
-                !watch("status")
-              }
-              className={`${
-                loading ||
-                !watch("title") ||
-                !watch("description") ||
-                !watch("dueDate") ||
-                !watch("status")
-                  ? "bg-[#B685BA] cursor-not-allowed"
-                  : "bg-[#7B1984] cursor-pointer"
-              } px-6 py-2.5 text-sm uppercase font-bold rounded-full text-white`}
-            >
-              Update
-            </button>
-          </footer>
+            <footer className="bg-[#F1F1F1] md:flex hidden justify-end items-center gap-x-2 p-4 h-fit border-t border-[#00000021]">
+              <button
+                onClick={handleCancel}
+                className=" px-6 py-2.5 cursor-pointer text-sm uppercase font-bold rounded-full text-[#090909] bg-white border border-[#00000030]"
+              >
+                Cancel
+              </button>
+              <button
+                disabled={
+                  loading ||
+                  !watch("title") ||
+                  !watch("description") ||
+                  !watch("dueDate") ||
+                  !watch("status")
+                }
+                className={`${
+                  loading ||
+                  !watch("title") ||
+                  !watch("description") ||
+                  !watch("dueDate") ||
+                  !watch("status")
+                    ? "bg-[#B685BA] cursor-not-allowed"
+                    : "bg-[#7B1984] cursor-pointer"
+                } px-6 py-2.5 text-sm uppercase font-bold rounded-full text-white`}
+              >
+                Update
+              </button>
+            </footer>
+          </form>
+
           {/**--------------- MOBILE SCREEN ----------- */}
           {!isActivityOpen ? (
             <>

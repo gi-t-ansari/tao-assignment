@@ -17,7 +17,7 @@ const Navbar = ({ selectedView, setSelectedView }) => {
   };
 
   return (
-    <nav className="w-full h-fit flex justify-between items-center md:px-6 md:py-0 px-4 py-3 sticky top-0 md:mt-8 md:bg-white bg-[#FAEEFC] z-10">
+    <nav className="w-full h-fit flex justify-between items-center md:px-6 md:py-2 px-4 py-3 sticky top-0 md:mt-6  md:bg-white bg-[#FAEEFC] z-10">
       <section>
         <div className="text-[#2F2F2F] flex items-center gap-x-1 ">
           <HiOutlineClipboardList className="md:block hidden" size={28} />

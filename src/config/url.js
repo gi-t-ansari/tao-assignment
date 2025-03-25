@@ -3,8 +3,4 @@ export const APP_URL = {
   HOME: "/",
 };
 
-export const BACKEND_BASE_URL = "http://localhost:5000/api/";
-
-export const API_URL = {
-  TASK: `${BACKEND_BASE_URL}/tasks`,
-};
+export const API_URL = "https://67e2f0a597fc65f53538367f.mockapi.io/tasks";

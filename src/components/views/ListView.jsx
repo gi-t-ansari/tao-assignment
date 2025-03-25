@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa6";
 import { AddTaskFormTable } from "../forms";
 
 const ListView = () => {
-  const [isAddTaskOpen, setIsAddTaskOpen] = useState(true);
+  const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
   return (
     <div className="w-full my-5">
       <div className="w-full  md:flex hidden">

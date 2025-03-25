@@ -1,4 +1,6 @@
 import moment from "moment";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { API_URL } from "./url";
 
 export const formatDate = (inputDate) => {
   const today = moment().startOf("day");
@@ -16,4 +18,28 @@ export const formatDate = (inputDate) => {
     default:
       return date.format("DD MMM, YYYY");
   }
+};
+
+export const useAddTask = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    async (taskData) => {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(taskData),
+      });
+      if (!response.ok) throw new Error("Failed to add task");
+      return response.json();
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["tasks"]);
+      },
+      onError: (error) => {
+        console.error("Error adding task:", error);
+      },
+    }
+  );
 };
