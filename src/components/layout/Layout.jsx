@@ -11,7 +11,7 @@ const Layout = ({
   children,
 }) => {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
-  const [isUpdateTaskOpen, setIsUpdateTaskOpen] = useState(false);
+  const [isUpdateTaskOpen, setIsUpdateTaskOpen] = useState(true);
 
   return (
     <main className="w-screen h-screen overflow-x-hidden">

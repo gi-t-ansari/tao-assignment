@@ -59,10 +59,10 @@ const AddTaskModal = ({ open, onClose }) => {
             <IoClose onClick={onClose} size={24} className="cursor-pointer" />
           </header>
           <form
-            className="w-full px-4 py-2 flex-1 overflow-y-auto"
+            className="w-full pt-2 flex-1 overflow-y-auto"
             onSubmit={handleSubmit(handleAddTask)}
           >
-            <div className="w-full">
+            <div className="w-full px-4">
               <input
                 {...register("title")}
                 type="text"
@@ -77,7 +77,7 @@ const AddTaskModal = ({ open, onClose }) => {
                 </p>
               )}
             </div>
-            <div className="w-full  mt-3">
+            <div className="w-full px-4 mt-3">
               <div className="w-full h-fit relative">
                 <textarea
                   {...register("description")}
@@ -105,7 +105,7 @@ const AddTaskModal = ({ open, onClose }) => {
                 </p>
               )}
             </div>
-            <div className="w-full mt-2 flex md:flex-row flex-col md:items-center md:justify-between md:gap-x-4 gap-y-2">
+            <div className="w-full px-4 mt-2 flex md:flex-row flex-col md:items-center md:justify-between md:gap-x-4 gap-y-2">
               <div className="md:flex-1">
                 <h6 className="text-xs text-[#00000099] font-semibold mb-2">
                   Task Category*
@@ -132,7 +132,7 @@ const AddTaskModal = ({ open, onClose }) => {
                   ))}
                 </div>
               </div>
-              <div className="md:flex-1">
+              <div className="md:flex-1 px-4">
                 <h6 className="text-xs text-[#00000099] font-semibold mb-2">
                   Due on*
                 </h6>
@@ -162,7 +162,7 @@ const AddTaskModal = ({ open, onClose }) => {
                 </select>
               </div>
             </div>
-            <div className="w-full mt-5">
+            <div className="w-full px-4 mt-5">
               <h6 className="text-sm text-[#00000099] font-semibold mb-2">
                 Attachment
               </h6>
@@ -180,35 +180,35 @@ const AddTaskModal = ({ open, onClose }) => {
               </label>
               <div className="w-full h-44"></div>
             </div>
+            <footer className="bg-[#F1F1F1] flex justify-end items-center gap-x-2 p-4 h-fit">
+              <button
+                onClick={handleCancel}
+                className=" px-6 py-2.5 cursor-pointer text-sm uppercase font-bold rounded-full text-[#090909] bg-white border border-[#00000030]"
+              >
+                Cancel
+              </button>
+              <button
+                disabled={
+                  loading ||
+                  !watch("title") ||
+                  !watch("description") ||
+                  !watch("dueDate") ||
+                  !watch("status")
+                }
+                className={`${
+                  loading ||
+                  !watch("title") ||
+                  !watch("description") ||
+                  !watch("dueDate") ||
+                  !watch("status")
+                    ? "bg-[#B685BA] cursor-not-allowed"
+                    : "bg-[#7B1984] cursor-pointer"
+                } px-6 py-2.5 text-sm uppercase font-bold rounded-full text-white`}
+              >
+                Create
+              </button>
+            </footer>
           </form>
-          <footer className="bg-[#F1F1F1] flex justify-end items-center gap-x-2 p-4 h-fit">
-            <button
-              onClick={handleCancel}
-              className=" px-6 py-2.5 cursor-pointer text-sm uppercase font-bold rounded-full text-[#090909] bg-white border border-[#00000030]"
-            >
-              Cancel
-            </button>
-            <button
-              disabled={
-                loading ||
-                !watch("title") ||
-                !watch("description") ||
-                !watch("dueDate") ||
-                !watch("status")
-              }
-              className={`${
-                loading ||
-                !watch("title") ||
-                !watch("description") ||
-                !watch("dueDate") ||
-                !watch("status")
-                  ? "bg-[#B685BA] cursor-not-allowed"
-                  : "bg-[#7B1984] cursor-pointer"
-              } px-6 py-2.5 text-sm uppercase font-bold rounded-full text-white`}
-            >
-              Create
-            </button>
-          </footer>
         </div>
       </div>
     )
