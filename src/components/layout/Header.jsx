@@ -2,7 +2,11 @@ import React from "react";
 import { CATEGORY_OPTIONS } from "../../config";
 import { RiSearchLine } from "react-icons/ri";
 
-const Header = ({ setCategoryFilterValue, setIsAddTaskOpen }) => {
+const Header = ({
+  setCategoryFilterValue,
+  setIsAddTaskOpen,
+  setSearchedTerm,
+}) => {
   return (
     <header className="w-full h-fit flex md:flex-row flex-col-reverse justify-between md:items-center md:px-6 px-4">
       <div className="w-full block md:hidden h-fit relative mt-3">
@@ -39,6 +43,7 @@ const Header = ({ setCategoryFilterValue, setIsAddTaskOpen }) => {
       <section className="flex justify-end items-center gap-x-8 mt-3">
         <div className="w-[204px] h-fit relative md:block hidden ">
           <input
+            onChange={(e) => setSearchedTerm(e.target.value)}
             type="search"
             placeholder="Search"
             className="text-sm font-semibold text-[#000000D1] rounded-full placeholder:text-[#000000D1] pl-7 pr-[7px] py-2 border border-[#0000006B] outline-none"

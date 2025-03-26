@@ -12,10 +12,13 @@ const AddTaskModal = ({ open, onClose }) => {
   const queryClient = useQueryClient();
 
   const schema = yup.object().shape({
-    title: yup.string().required("Title is required."),
+    title: yup
+      .string()
+      .required("Title is required.")
+      .max(30, "Title should not be more that 30 letters."),
     description: yup
       .string()
-      .max(300, "Description should not be more that 300 words."),
+      .max(300, "Description should not be more that 300 letters."),
     category: yup.string().required("Category is required."),
     status: yup.string().required("Status is required."),
     dueDate: yup.string().required("Due dta eis required."),

@@ -14,7 +14,10 @@ const UpdateTaskModal = ({ open, onClose, taskData }) => {
   const queryClient = useQueryClient();
 
   const schema = yup.object().shape({
-    title: yup.string().required("Title is required."),
+    title: yup
+      .string()
+      .required("Title is required.")
+      .max(30, "Title should not be more that 30 letters."),
     description: yup
       .string()
       .max(300, "Description should not be more than 300 characters."),

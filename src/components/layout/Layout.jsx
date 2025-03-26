@@ -6,7 +6,7 @@ import { AddTaskModal, UpdateTaskModal } from "../modals";
 const Layout = ({
   selectedView,
   setSelectedView,
-
+  setSearchedTerm,
   setCategoryFilterValue,
   children,
 }) => {
@@ -19,6 +19,7 @@ const Layout = ({
       <Header
         setCategoryFilterValue={setCategoryFilterValue}
         setIsAddTaskOpen={setIsAddTaskOpen}
+        setSearchedTerm={setSearchedTerm}
       />
       <div className="md:px-6 px-4">{children}</div>
       <AddTaskModal
