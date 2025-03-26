@@ -6,15 +6,15 @@ import { APP_URL } from "../../config";
 import { HiOutlineClipboardList } from "react-icons/hi";
 import { FcGoogle } from "react-icons/fc";
 
-const Login = () => {
-  const [user, setUser] = useState(null);
+const Login = ({ setUserInfo, setIsAuthenticated }) => {
   const navigate = useNavigate();
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      setUser(result.user);
-      console.log("User Detail =>", result.user);
+      setIsAuthenticated(true);
+      setUserInfo(result.user);
       navigate(APP_URL.HOME);
+      console.log(result.user);
     } catch (error) {
       console.error("Error signing in:", error.message);
     }

@@ -40,7 +40,7 @@ const Header = ({
         </div>
       </section>
 
-      <section className="flex justify-end items-center gap-x-8 mt-3">
+      <section className="flex justify-end items-center gap-x-4 mt-3">
         <div className="w-[204px] h-fit relative md:block hidden ">
           <input
             onChange={(e) => setSearchedTerm(e.target.value)}

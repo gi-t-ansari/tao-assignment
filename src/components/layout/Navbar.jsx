@@ -1,19 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { HiOutlineClipboardList } from "react-icons/hi";
 import { TbLogout2 } from "react-icons/tb";
 import { APP_URL, TABS_CONTENT } from "../../config";
 import sampleProfilePic from "../../assets/sampleProfile.svg";
 import { useNavigate } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
 
-const Navbar = ({ selectedView, setSelectedView }) => {
+const Navbar = ({
+  selectedView,
+  setSelectedView,
+  setUserInfo,
+  setIsAuthenticated,
+  userInfo,
+}) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleTabSwitch = (selectedTab) => {
     setSelectedView(selectedTab);
   };
 
-  const handleLogout = (e) => {
-    navigate(APP_URL.LOGIN);
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    const auth = getAuth();
+
+    try {
+      await signOut(auth);
+      setUserInfo(null);
+      setIsAuthenticated(false);
+      navigate(APP_URL.LOGIN);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  const toggleMenu = (e) => {
+    e.preventDefault();
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
@@ -40,22 +64,43 @@ const Navbar = ({ selectedView, setSelectedView }) => {
           ))}
         </div>
       </section>
-      <section>
-        <div className="flex items-center gap-x-2">
-          <div className="md:h-9 md:w-9 h-[25px] w-[25px] rounded-full overflow-hidden">
+      <section className="flex flex-col items-end">
+        <div className="flex items-center gap-x-2 relative">
+          <div
+            className="md:h-9 md:w-9 h-[25px] w-[25px] rounded-full overflow-hidden"
+            onClick={toggleMenu}
+          >
             <img
               className="h-full w-full"
-              src={sampleProfilePic}
-              alt="Arvind"
+              src={userInfo?.photoURL || sampleProfilePic}
+              alt={userInfo?.displayName}
             />
           </div>
           <h6 className="text-base md:block hidden text-[#00000099] font-bold">
-            Aravind
+            {userInfo?.displayName}
           </h6>
+          <div
+            className={`absolute md:hidden block z-10 top-6.5 w-fit right-0 bg-[#FFF9F9] rounded-xl border border-[#7B198426] transition-all duration-300 ease-in-out transform ${
+              isMenuOpen
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-95 pointer-events-none"
+            }`}
+          >
+            <p className="px-2 py-1 text-xs text-nowrap">
+              {userInfo?.displayName}
+            </p>
+            <p
+              onClick={handleLogout}
+              className="px-2 py-1 text-xs text-red-500 cursor-pointer flex items-center gap-x-1"
+            >
+              <TbLogout2 />
+              <span className="mb-0.5">Logout</span>
+            </p>
+          </div>
         </div>
         <button
           onClick={handleLogout}
-          className=" md:flex hidden items-center gap-x-1 pl-2 pr-6 py-2 rounded-xl border border-[#7B198426] mt-2"
+          className=" md:flex hidden cursor-pointer items-center gap-x-1 pl-2 pr-6 py-2 rounded-xl border border-[#7B198426] mt-2"
         >
           <TbLogout2 />
           <span className="mb-0.5">Logout</span>

@@ -9,13 +9,22 @@ const Layout = ({
   setSearchedTerm,
   setCategoryFilterValue,
   children,
+  setUserInfo,
+  setIsAuthenticated,
+  userInfo,
 }) => {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
   const [isUpdateTaskOpen, setIsUpdateTaskOpen] = useState(false);
 
   return (
     <main className="w-screen h-screen overflow-x-hidden">
-      <Navbar selectedView={selectedView} setSelectedView={setSelectedView} />
+      <Navbar
+        selectedView={selectedView}
+        setSelectedView={setSelectedView}
+        setUserInfo={setUserInfo}
+        setIsAuthenticated={setIsAuthenticated}
+        userInfo={userInfo}
+      />
       <Header
         setCategoryFilterValue={setCategoryFilterValue}
         setIsAddTaskOpen={setIsAddTaskOpen}

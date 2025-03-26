@@ -10,7 +10,7 @@ const fetchTasks = async () => {
   return data;
 };
 
-const Home = () => {
+const Home = ({ setUserInfo, setIsAuthenticated, userInfo }) => {
   const {
     data: tasks = [],
     isLoading,
@@ -55,6 +55,9 @@ const Home = () => {
       setSelectedView={setSelectedView}
       setCategoryFilterValue={setCategoryFilterValue}
       setSearchedTerm={setSearchedTerm}
+      setUserInfo={setUserInfo}
+      setIsAuthenticated={setIsAuthenticated}
+      userInfo={userInfo}
     >
       {isLoading ? (
         <CircularProgress />
