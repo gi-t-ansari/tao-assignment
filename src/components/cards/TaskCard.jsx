@@ -5,10 +5,12 @@ import { API_URL, formatDate } from "../../config";
 import { RiDeleteBinFill, RiEditFill } from "react-icons/ri";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { UpdateTaskModal } from "../modals";
 
 const TaskCard = ({ taskData }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdateTaskOpen, setIsUpdateTaskOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const deleteTaskMutation = useMutation({
@@ -32,6 +34,12 @@ const TaskCard = ({ taskData }) => {
 
   const toggleMenu = (e) => {
     e.preventDefault();
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const openUpdateTaskModal = (e) => {
+    e.preventDefault();
+    setIsUpdateTaskOpen(true);
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -60,6 +68,7 @@ const TaskCard = ({ taskData }) => {
                   ? "cursor-not-allowed text-slate-500"
                   : "text-black cursor-pointer"
               } `}
+              onClick={openUpdateTaskModal}
             >
               <RiEditFill size={16} />
               <span className="text-base font-semibold">Edit</span>
@@ -87,6 +96,11 @@ const TaskCard = ({ taskData }) => {
           {formatDate(taskData?.dueDate)}
         </p>
       </footer>
+      <UpdateTaskModal
+        taskData={taskData}
+        open={isUpdateTaskOpen}
+        onClose={() => setIsUpdateTaskOpen(false)}
+      />
     </div>
   );
 };

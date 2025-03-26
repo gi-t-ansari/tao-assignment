@@ -6,24 +6,28 @@ import { RxDragHandleDots2 } from "react-icons/rx";
 import { TiTick } from "react-icons/ti";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { UpdateTaskModal } from "../modals";
 
 const ListViewChildren = ({ taskData }) => {
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
   const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false);
+  const [isUpdateTaskOpen, setIsUpdateTaskOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const queryClient = useQueryClient();
 
   const updateTaskMutation = useMutation({
     mutationFn: async ({ taskId, updatedData }) => {
+      setIsLoading(true);
       return axios.put(`${API_URL}/${taskId}`, updatedData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["tasks"]);
-      setIsActionMenuOpen(false);
+      setIsLoading(false);
     },
     onError: (error) => {
       console.error("Error updating task:", error);
+      setIsLoading(false);
     },
   });
 
@@ -32,6 +36,7 @@ const ListViewChildren = ({ taskData }) => {
       setIsStatusMenuOpen(false);
       return;
     } else {
+      setIsStatusMenuOpen(false);
       updateTaskMutation.mutate({
         taskId: taskData?.id,
         updatedData: {
@@ -78,6 +83,12 @@ const ListViewChildren = ({ taskData }) => {
     setIsStatusMenuOpen(!isStatusMenuOpen);
   };
 
+  const openUpdateTaskModal = (e) => {
+    e.preventDefault();
+    setIsUpdateTaskOpen(true);
+    setIsActionMenuOpen(!isActionMenuOpen);
+  };
+
   return (
     <div className="w-full  flex items-center border-b py-2 border-[#0000001A] last:border-none font-medium ">
       <div className="flex-1 px-2.5 flex items-center gap-x-1.5">
@@ -109,10 +120,10 @@ const ListViewChildren = ({ taskData }) => {
           onClick={toggleStatusMenu}
           className=" px-2.5 py-1 rounded-sm bg-[#DDDADD] w-fit text-sm uppercase cursor-pointer"
         >
-          {taskData?.status}
+          {isLoading ? "Updating..." : taskData?.status}
         </p>
         <div
-          className={`absolute top-8 left-2 bg-[#FFF9F9] rounded-xl border border-[#7B198426] transition-all duration-300 ease-in-out transform ${
+          className={`absolute z-10 top-8 left-2 bg-[#FFF9F9] rounded-xl border border-[#7B198426] transition-all duration-300 ease-in-out transform ${
             isStatusMenuOpen
               ? "opacity-100 scale-100"
               : "opacity-0 scale-95 pointer-events-none"
@@ -126,13 +137,7 @@ const ListViewChildren = ({ taskData }) => {
               }`}
               onClick={() => handleUpdateStatus(ele)}
             >
-              <input
-                // onChange={(e) => handleUpdateStatus(e.target.value)}
-                name="status"
-                type="radio"
-                hidden
-                value={ele}
-              />
+              <input name="status" type="radio" hidden value={ele} />
               {ele}
             </label>
           ))}
@@ -158,6 +163,7 @@ const ListViewChildren = ({ taskData }) => {
                 ? "cursor-not-allowed text-slate-500"
                 : "text-black cursor-pointer"
             } `}
+            onClick={openUpdateTaskModal}
           >
             <RiEditFill size={16} />
             <span className="text-base ">Edit</span>
@@ -178,6 +184,11 @@ const ListViewChildren = ({ taskData }) => {
           </button>
         </div>
       </div>
+      <UpdateTaskModal
+        taskData={taskData}
+        open={isUpdateTaskOpen}
+        onClose={() => setIsUpdateTaskOpen(false)}
+      />
     </div>
   );
 };

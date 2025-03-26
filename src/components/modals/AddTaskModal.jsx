@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 const AddTaskModal = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false);
@@ -38,19 +39,21 @@ const AddTaskModal = ({ open, onClose }) => {
 
   const addTaskMutation = useMutation({
     mutationFn: async (taskData) => {
-      setLoading(true);
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(taskData),
-      });
-      if (!response.ok) throw new Error("Failed to add task");
-      return response.json();
+      try {
+        setLoading(true);
+        const response = await axios.post(API_URL, taskData, {
+          headers: { "Content-Type": "application/json" },
+        });
+        return response.data;
+      } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to add task");
+      } finally {
+        setLoading(false);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       onClose();
-      setLoading(false);
       reset();
     },
     onError: (error) => {
