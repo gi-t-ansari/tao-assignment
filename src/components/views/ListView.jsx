@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatDate, TABLE_HEADERS, TASK_OPTIONS } from "../../config";
 import { AccordionComponent } from "../accordions";
 import { FaPlus } from "react-icons/fa6";
@@ -16,6 +16,16 @@ const ListView = ({ taskData }) => {
   const [completedTasks, setCompletedTasks] = useState(
     taskData?.filter((ele) => ele?.status === TASK_OPTIONS[2])
   );
+
+  useEffect(() => {
+    setToDoTasks(taskData?.filter((ele) => ele?.status === TASK_OPTIONS[0]));
+    setInProgressTasks(
+      taskData?.filter((ele) => ele?.status === TASK_OPTIONS[1])
+    );
+    setCompletedTasks(
+      taskData?.filter((ele) => ele?.status === TASK_OPTIONS[2])
+    );
+  }, [taskData]);
 
   return (
     <div className="w-full my-5">

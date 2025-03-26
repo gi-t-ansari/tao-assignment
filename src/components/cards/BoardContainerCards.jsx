@@ -19,7 +19,7 @@ const BoardContainerCards = ({ name, cardData, emptyText, className }) => {
         {cardData?.length > 0 ? (
           <>
             {cardData?.map((ele) => (
-              <TaskCard key={ele?.id} cardData={ele} />
+              <TaskCard key={ele?.id} taskData={ele} />
             ))}
           </>
         ) : (

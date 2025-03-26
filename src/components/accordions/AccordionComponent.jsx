@@ -23,7 +23,7 @@ const AccordionComponent = ({ name, count, children, className }) => {
 
       <div
         ref={contentRef}
-        className="transition-all duration-500 ease-in-out overflow-hidden"
+        className="transition-all duration-500 ease-in-out "
         style={{
           maxHeight: isOpen ? `${contentRef.current?.scrollHeight}px` : "0px",
           opacity: isOpen ? 1 : 0,

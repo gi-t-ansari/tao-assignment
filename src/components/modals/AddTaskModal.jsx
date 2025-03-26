@@ -169,11 +169,7 @@ const AddTaskModal = ({ open, onClose }) => {
                 >
                   <option value="">Choose</option>
                   {TASK_OPTIONS.map((ele, ind) => (
-                    <option
-                      className="uppercase"
-                      key={`${ele}${ind + 9}`}
-                      value={ele}
-                    >
+                    <option key={`${ele}${ind + 9}`} value={ele}>
                       {ele}
                     </option>
                   ))}
