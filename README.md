@@ -1,12 +1,60 @@
-# React + Vite
+## Overview
+This is a task management system built using Vite, React, and Firebase. It allows users to create, update, delete, and manage tasks efficiently. The application features batch actions, filtering, task history tracking, and a responsive UI.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
+- **User Authentication**: Sign up and log in using Firebase authentication.
+- **Task Management**:
+  - Create, edit, and delete tasks.
+  - Mark tasks as completed or pending.
+  - View task details and due dates.
+- **Batch Actions**:
+  - Select multiple tasks for bulk updates or deletions.
+- **Filtering**:
+  - Filter tasks by category and search (can filter by title, category & satus).
+- **History and Logs**:
+  - Maintain a task history for tracking updates.
+- **Responsive Design**:
+  - Optimized for both mobile and desktop users.
 
-Currently, two official plugins are available:
+## Installation & Setup
+1. **Install Dependencies**
+   ```sh
+   npm install
+   # OR
+   yarn install
+   ```
+2. **Start the Development Server**
+   ```sh
+   npm run dev
+   ```
+   The app will be available at `http://localhost:5173/`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Challenges Faced & Solutions
+### 1. **User Authentication Implementation**
+   - **Challenge**: Setting up Firebase authenticationwas totally new for me.
+   - **Solution**: Spend a lay learning and then implementing it by using Firebase Authentication hooks to handle login/logout functionality seamlessly.
 
-## Expanding the ESLint configuration
+### 2. **State Management for Task Selection**
+   - **Challenge**: Handling multiple task selections for batch operations.
+   - **Solution**: Implemented `useState` to track selected tasks and `useEffect` to update UI accordingly.
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 3. **Performance Optimization**
+   - **Challenge**: Handling multiple API calls efficiently.
+   - **Solution**: Used `React Query` for caching and updating task data asynchronously, reducing unnecessary re-renders.
+
+## Future Enhancements
+- Manage profile.
+- Custom date pickers.
+- Sorting based on due date.
+- A file upload feature in the task creation/editing form and display the attached files in the task detail view.
+- Filtering by date range.
+- Task history updation on batch and other than status update.
+- Addition of drag-and-drop functionality for task reordering.
+- Conversion to Typescript
+
+## Contributing
+Feel free to fork the project and submit pull requests for improvements.
+
+## License
+This project is licensed under the MIT License.
+
