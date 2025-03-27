@@ -12,22 +12,23 @@ const ListViewChildren = ({ taskData }) => {
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
   const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false);
   const [isUpdateTaskOpen, setIsUpdateTaskOpen] = useState(false);
+  const [statusChangeLoading, setStatusChangeLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const queryClient = useQueryClient();
 
   const updateTaskMutation = useMutation({
     mutationFn: async ({ taskId, updatedData }) => {
-      setIsLoading(true);
+      setStatusChangeLoading(true);
       return axios.put(`${API_URL}/${taskId}`, updatedData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["tasks"]);
-      setIsLoading(false);
+      setStatusChangeLoading(false);
     },
     onError: (error) => {
       console.error("Error updating task:", error);
-      setIsLoading(false);
+      setStatusChangeLoading(false);
     },
   });
 
@@ -120,7 +121,7 @@ const ListViewChildren = ({ taskData }) => {
           onClick={toggleStatusMenu}
           className=" px-2.5 py-1 rounded-sm bg-[#DDDADD] w-fit text-sm uppercase cursor-pointer"
         >
-          {isLoading ? "Updating..." : taskData?.status}
+          {statusChangeLoading ? "Updating..." : taskData?.status}
         </p>
         <div
           className={`absolute z-10 top-8 left-2 bg-[#FFF9F9] rounded-xl border border-[#7B198426] transition-all duration-300 ease-in-out transform ${

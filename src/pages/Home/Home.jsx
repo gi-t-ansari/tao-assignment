@@ -10,7 +10,8 @@ const fetchTasks = async () => {
   return data;
 };
 
-const Home = ({ setUserInfo, setIsAuthenticated, userInfo }) => {
+const Home = ({ setUserInfo, userInfo }) => {
+  // localStorage.clear();
   const {
     data: tasks = [],
     isLoading,
@@ -56,7 +57,6 @@ const Home = ({ setUserInfo, setIsAuthenticated, userInfo }) => {
       setCategoryFilterValue={setCategoryFilterValue}
       setSearchedTerm={setSearchedTerm}
       setUserInfo={setUserInfo}
-      setIsAuthenticated={setIsAuthenticated}
       userInfo={userInfo}
     >
       {isLoading ? (

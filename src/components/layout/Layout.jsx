@@ -10,7 +10,6 @@ const Layout = ({
   setCategoryFilterValue,
   children,
   setUserInfo,
-  setIsAuthenticated,
   userInfo,
 }) => {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
@@ -22,7 +21,6 @@ const Layout = ({
         selectedView={selectedView}
         setSelectedView={setSelectedView}
         setUserInfo={setUserInfo}
-        setIsAuthenticated={setIsAuthenticated}
         userInfo={userInfo}
       />
       <Header

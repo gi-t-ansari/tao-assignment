@@ -4,15 +4,10 @@ import { TbLogout2 } from "react-icons/tb";
 import { APP_URL, TABS_CONTENT } from "../../config";
 import sampleProfilePic from "../../assets/sampleProfile.svg";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
-const Navbar = ({
-  selectedView,
-  setSelectedView,
-  setUserInfo,
-  setIsAuthenticated,
-  userInfo,
-}) => {
+const Navbar = ({ selectedView, setSelectedView, setUserInfo, userInfo }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -23,12 +18,12 @@ const Navbar = ({
   const handleLogout = async (e) => {
     e.preventDefault();
 
-    const auth = getAuth();
+    // const auth = getAuth();
 
     try {
       await signOut(auth);
+      localStorage.clear();
       setUserInfo(null);
-      setIsAuthenticated(false);
       navigate(APP_URL.LOGIN);
     } catch (error) {
       console.error("Logout failed:", error);
@@ -72,7 +67,7 @@ const Navbar = ({
           >
             <img
               className="h-full w-full"
-              src={userInfo?.photoURL || sampleProfilePic}
+              src={userInfo?.photoURL}
               alt={userInfo?.displayName}
             />
           </div>

@@ -6,12 +6,14 @@ import { APP_URL } from "../../config";
 import { HiOutlineClipboardList } from "react-icons/hi";
 import { FcGoogle } from "react-icons/fc";
 
-const Login = ({ setUserInfo, setIsAuthenticated }) => {
+const Login = ({ setUserInfo }) => {
   const navigate = useNavigate();
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      setIsAuthenticated(true);
+
+      localStorage.setItem("authToken", result?.user?.accessToken);
+
       setUserInfo(result.user);
       navigate(APP_URL.HOME);
       console.log(result.user);
