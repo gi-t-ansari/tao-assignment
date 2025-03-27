@@ -25,6 +25,7 @@ const Home = ({ setUserInfo, userInfo }) => {
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [categoryFilterValue, setCategoryFilterValue] = useState("");
   const [searchedTerm, setSearchedTerm] = useState("");
+  const [selectedTask, setSelectedTask] = useState([]);
 
   useEffect(() => {
     if (!tasks.length) return;
@@ -64,7 +65,11 @@ const Home = ({ setUserInfo, userInfo }) => {
       ) : error ? (
         <p className="text-red-500">{error.message}</p>
       ) : selectedView === TABS_CONTENT[0].name ? (
-        <ListView taskData={filteredTasks} />
+        <ListView
+          selectedTask={selectedTask}
+          setSelectedTask={setSelectedTask}
+          taskData={filteredTasks}
+        />
       ) : (
         <BoardView taskData={filteredTasks} />
       )}

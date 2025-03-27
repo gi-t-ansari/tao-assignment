@@ -3,12 +3,12 @@ import { API_URL, formatDate, TASK_OPTIONS } from "../../config";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { RiDeleteBinFill, RiEditFill } from "react-icons/ri";
 import { RxDragHandleDots2 } from "react-icons/rx";
-import { TiTick } from "react-icons/ti";
+import { FaCheckCircle } from "react-icons/fa";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { UpdateTaskModal } from "../modals";
 
-const ListViewChildren = ({ taskData }) => {
+const ListViewChildren = ({ taskData, selectedTask, setSelectedTask }) => {
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
   const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false);
   const [isUpdateTaskOpen, setIsUpdateTaskOpen] = useState(false);
@@ -90,20 +90,32 @@ const ListViewChildren = ({ taskData }) => {
     setIsActionMenuOpen(!isActionMenuOpen);
   };
 
+  const toggleSelection = () => {
+    if (selectedTask.includes(taskData.id)) {
+      setSelectedTask(selectedTask.filter((id) => id !== taskData.id));
+    } else {
+      setSelectedTask([...selectedTask, taskData.id]);
+    }
+  };
+
   return (
     <div className="w-full  flex items-center border-b py-2 border-[#0000001A] last:border-none font-medium ">
       <div className="flex-1 px-2.5 flex items-center gap-x-1.5">
-        <input type="checkbox" className="w-3.5 h-3.5" />
+        <input
+          type="checkbox"
+          className="w-3.5 h-3.5 cursor-pointer appearance-none  border-2 border-gray-400 rounded-sm checked:bg-[#7B1984] checked:border-[#7B1984]"
+          checked={selectedTask?.includes(taskData?.id)}
+          onChange={toggleSelection}
+        />
         <RxDragHandleDots2 className="text-[#9A9A9A] md:block hidden" />
-        <div
-          className={`h-[16.67px] w-[16.67px] rounded-full ${
+        <FaCheckCircle
+          className={`${
             taskData?.status === TASK_OPTIONS[2]
-              ? "bg-[#1B8D17]"
-              : "bg-[#9A9A9A]"
-          } flex items-center justify-center`}
-        >
-          <TiTick className="text-white ml-[0.3px]" size={13} />
-        </div>
+              ? "text-[#1B8D17]"
+              : "text-[#9A9A9A]"
+          }`}
+          size={13}
+        />
         <p
           className={` text-sm ${
             taskData?.status === TASK_OPTIONS[2] && "line-through"
